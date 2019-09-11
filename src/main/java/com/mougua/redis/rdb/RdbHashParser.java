@@ -11,19 +11,6 @@ public class RdbHashParser {
     private final ByteBuffer buf;
     private static final Charset ASCII = Charset.forName("ASCII");
 
-    private static String byte2hex(byte[] buffer) {
-        String h = "";
-        for (int i = 0; i < buffer.length; i++) {
-            String temp = Integer.toHexString(buffer[i] & 0xFF);
-            if (temp.length() == 1) {
-                temp = "0" + temp;
-            }
-            h = h + " " + temp;
-        }
-
-        return h;
-    }
-
     public RdbHashParser(byte[] bytes) {
         byte[] bytes1 = new byte[bytes.length-1];
         System.arraycopy(bytes, 1, bytes1, 0, bytes1.length);
