@@ -1,0 +1,8 @@
+/target/
+/.classpath
+/.settings/
+/.project
+workbench.xmi
+/.idea/
+/redis/
+/java-rdb-hash-dump-parser.iml
