@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class RdbHashParser {
     private final ByteBuffer buf;
-    private static final Charset ASCII = Charset.forName("ASCII");
+    private static final Charset UTF8 = Charset.forName("UTF-8");
 
     public RdbHashParser(byte[] bytes) {
         buf = ByteBuffer.wrap(bytes);
@@ -121,13 +121,13 @@ public class RdbHashParser {
     }
 
     private byte[] readInteger8Bits() throws IOException {
-        return String.valueOf(readSignedByte()).getBytes(ASCII);
+        return String.valueOf(readSignedByte()).getBytes(UTF8);
     }
 
     private byte[] readInteger16Bits() throws IOException {
         long val = ((long) readByte() & 0xff) << 0
                 | (long) readSignedByte() << 8; // Don't apply 0xff mask to preserve sign.
-        return String.valueOf(val).getBytes(ASCII);
+        return String.valueOf(val).getBytes(UTF8);
     }
 
     private byte[] readInteger32Bits() throws IOException {
@@ -136,7 +136,7 @@ public class RdbHashParser {
                 | ((long) bs[2] & 0xff) << 16
                 | ((long) bs[1] & 0xff) << 8
                 | ((long) bs[0] & 0xff) << 0;
-        return String.valueOf(val).getBytes(ASCII);
+        return String.valueOf(val).getBytes(UTF8);
     }
 
     private byte[] readLzfString() throws IOException {
@@ -162,8 +162,8 @@ public class RdbHashParser {
         HashMap<String, String> map = new HashMap<>();
         String key, value;
         for (int i = 0; i < size; ++i) {
-            key = new String(readStringEncoded(), ASCII);
-            value = new String(readStringEncoded(), ASCII);
+            key = new String(readStringEncoded(), UTF8);
+            value = new String(readStringEncoded(), UTF8);
             map.put(key, value);
         }
         return map;

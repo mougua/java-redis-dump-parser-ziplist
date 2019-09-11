@@ -12,8 +12,6 @@
 
 package com.mougua.redis.rdb;
 
-import org.omg.IOP.Encoding;
-
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +19,7 @@ import java.util.List;
 
 public class ZipList {
 
-    private static final Charset ASCII = Charset.forName("ASCII");
+    private static final Charset UTF8 = Charset.forName("UTF-8");
     private final byte[] envelope;
 
 
@@ -82,14 +80,14 @@ public class ZipList {
                         case 0: // read next 2 bytes as a 16 bit signed integer
                             val = (long)envelope[pos++] & 0xff
                                     | (long)envelope[pos++] << 8;
-                            list.add(String.valueOf(val).getBytes(ASCII));
+                            list.add(String.valueOf(val).getBytes(UTF8));
                             break;
                         case 1: // read next 4 bytes as a 32 bit signed integer
                             val = ((long)envelope[pos++] & 0xff) <<  0
                                     | ((long)envelope[pos++] & 0xff) <<  8
                                     | ((long)envelope[pos++] & 0xff) << 16
                                     |  (long)envelope[pos++]         << 24;
-                            list.add(String.valueOf(val).getBytes(ASCII));
+                            list.add(String.valueOf(val).getBytes(UTF8));
                             break;
                         case 2: // read next 8 as a 64 bit signed integer
                             val = ((long)envelope[pos++] & 0xff) <<  0
@@ -100,7 +98,7 @@ public class ZipList {
                                     | ((long)envelope[pos++] & 0xff) << 40
                                     | ((long)envelope[pos++] & 0xff) << 48
                                     |  (long)envelope[pos++]         << 56;
-                            list.add(String.valueOf(val).getBytes(ASCII));
+                            list.add(String.valueOf(val).getBytes(UTF8));
                             break;
                         case 3:
                             int loBits = special & 0x0f;
@@ -109,15 +107,15 @@ public class ZipList {
                                     val = ((long)envelope[pos++] & 0xff) <<  0
                                             | ((long)envelope[pos++] & 0xff) <<  8
                                             |  (long)envelope[pos++]         << 16;
-                                    list.add(String.valueOf(val).getBytes(ASCII));
+                                    list.add(String.valueOf(val).getBytes(UTF8));
                                     break;
                                 case 0x0e: // read next byte as an 8 bit signed integer
                                     val = (long)envelope[pos++];
-                                    list.add(String.valueOf(val).getBytes(ASCII));
+                                    list.add(String.valueOf(val).getBytes(UTF8));
                                     break;
                                 default: /* an immediate 4 bit unsigned integer between 0 and 12. Substract 1 as the
                             range is actually between 1 and 13. */
-                                    list.add(String.valueOf(loBits - 1).getBytes(ASCII));
+                                    list.add(String.valueOf(loBits - 1).getBytes(UTF8));
                                     break;
                             }
                             break;
@@ -187,14 +185,14 @@ public class ZipList {
                         case 0: // read next 2 bytes as a 16 bit signed integer
                             val = (long)envelope[pos++] & 0xff
                                     | (long)envelope[pos++] << 8;
-                            res = String.valueOf(val).getBytes(ASCII);
+                            res = String.valueOf(val).getBytes(UTF8);
                             break;
                         case 1: // read next 4 bytes as a 32 bit signed integer
                             val = ((long)envelope[pos++] & 0xff) <<  0
                                     | ((long)envelope[pos++] & 0xff) <<  8
                                     | ((long)envelope[pos++] & 0xff) << 16
                                     |  (long)envelope[pos++]         << 24;
-                            res = String.valueOf(val).getBytes(ASCII);
+                            res = String.valueOf(val).getBytes(UTF8);
                             break;
                         case 2: // read next 8 as a 64 bit signed integer
                             val = ((long)envelope[pos++] & 0xff) <<  0
@@ -205,7 +203,7 @@ public class ZipList {
                                     | ((long)envelope[pos++] & 0xff) << 40
                                     | ((long)envelope[pos++] & 0xff) << 48
                                     |  (long)envelope[pos++]         << 56;
-                            res = String.valueOf(val).getBytes(ASCII);
+                            res = String.valueOf(val).getBytes(UTF8);
                             break;
                         case 3:
                             int loBits = special & 0x0f;
@@ -214,15 +212,15 @@ public class ZipList {
                                     val = ((long)envelope[pos++] & 0xff) <<  0
                                             | ((long)envelope[pos++] & 0xff) <<  8
                                             |  (long)envelope[pos++]         << 16;
-                                    res = String.valueOf(val).getBytes(ASCII);
+                                    res = String.valueOf(val).getBytes(UTF8);
                                     break;
                                 case 0x0e: // read next byte as an 8 bit signed integer
                                     val = (long)envelope[pos++];
-                                    res = String.valueOf(val).getBytes(ASCII);
+                                    res = String.valueOf(val).getBytes(UTF8);
                                     break;
                                 default: /* an immediate 4 bit unsigned integer between 0 and 12. Substract 1 as the
                             range is actually between 1 and 13. */
-                                    res = String.valueOf(loBits - 1).getBytes(ASCII);
+                                    res = String.valueOf(loBits - 1).getBytes(UTF8);
                                     break;
                             }
                             break;
@@ -232,9 +230,9 @@ public class ZipList {
                 default: // never reached
             }
             if (r > 0) {
-                map.put(key, new String(res, ASCII));
+                map.put(key, new String(res, UTF8));
             } else {
-                key = new String(res, ASCII);
+                key = new String(res, UTF8);
             }
             idx += 1;
         }

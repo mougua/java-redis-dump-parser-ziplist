@@ -25,7 +25,7 @@ public class ParserApplicationTests {
     @Test
     public void testJedis() throws Exception {
         Jedis jedis = new Jedis("localhost");
-        byte[] bytes = jedis.dump("CTIAGT:72011");
+        byte[] bytes = jedis.dump("STAT_AGT:00000");
         System.out.println(byte2hex(bytes));
         RdbHashParser parser = new RdbHashParser(bytes);
 
