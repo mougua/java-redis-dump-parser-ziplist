@@ -12,6 +12,8 @@
 
 package com.mougua.redis.rdb;
 
+import org.omg.IOP.Encoding;
+
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
