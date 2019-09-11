@@ -148,7 +148,7 @@ public class RdbHashParser {
         return dest;
     }
 
-    public ZipList readZipList() throws IOException {
+    private ZipList readZipList() throws IOException {
         return new ZipList(readStringEncoded());
     }
 
